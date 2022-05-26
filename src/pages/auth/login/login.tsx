@@ -32,7 +32,12 @@ export default function Login() {
   const [isButtonDisabled, setButtonDisabled] = useState(false);
   const { handleSubmit } = useForm();
   const theme = createTheme();
+  const [data, setdata] = useState({
+    username: "",
+    password: ""
+  })
 
+  const [toggle, setToggle] = useState(false)
   const [values, setValues] = React.useState<State>({
     password: '',
     showPassword: false,
@@ -42,9 +47,11 @@ export default function Login() {
    * Verify Credentials
    */
   const doLogin = (formData: any) => {
+    console.log(data);
+
     setButtonDisabled(true);
     authenticationService
-      .verifyCredentials(formData)
+      .verifyCredentials(data)
       .then((response: any) => {
         setButtonDisabled(false);
       })
@@ -63,20 +70,31 @@ export default function Login() {
   }
 
 
-  const handleChange =
-    (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
-    };
+  // const handleChange =
+  //   (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  //     setValues({ ...values, [prop]: event.target.value });
+  //   };
 
   const handleClickShowPassword = () => {
+    console.log(values);
+
+    // console.log(values.password);
+
     setValues({
       ...values,
-      showPassword: !values.showPassword,
+      showPassword: true,
     });
+    setToggle(true)
   };
 
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+    console.log(values);
+
+    setValues({
+      ...values,
+      showPassword: false,
+    });
   };
 
 
@@ -101,8 +119,8 @@ export default function Login() {
             paddingRight: 5
           }}
         >
-          <Typography component="h1" variant="h5">
-            Sign in
+          <Typography component="h1" variant="h5" sx={{ marginTop: 5 }}>
+            Sign in to Social Feed
           </Typography>
           <Box
             component="form"
@@ -115,7 +133,8 @@ export default function Login() {
               margin="normal"
               required
               fullWidth
-              defaultValue="navanath@angularminds.com"
+              // defaultValue="navanath@angularminds.com"
+              value={data.username}
               id="email"
               label="Email Address"
               name="email"
@@ -123,6 +142,7 @@ export default function Login() {
               autoFocus
               size="small"
               sx={{ Width: "200px" }}
+              onChange={(e) => setdata({ ...data, username: e.target.value })}
             />
             <TextField
               margin="normal"
@@ -130,12 +150,13 @@ export default function Login() {
               fullWidth
               name="password"
               label="Password"
-              defaultValue="Pass"
-              type="password"
+              // defaultValue="Pass"
+              value={values.showPassword ? values.password : data.password}
+              type={values.showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
               size="small"
-
+              onChange={(e) => { setdata({ ...data, password: e.target.value }); setValues({ ...values, password: e.target.value }) }}
               InputProps={{
                 endAdornment:
                   (<InputAdornment position="end">
@@ -172,8 +193,8 @@ export default function Login() {
                 </Link>
               </Grid> */}
               <Grid item sx={{ mb: "50px" }}>
-                <Link href="#" variant="body2" onClick={handleSubmit(signup)}>
-                  {"Don't have an account? Sign Up"}
+                Don't have an account?<Link href="/auth/signup" variant="body2" onClick={handleSubmit(signup)}>
+                  {" Sign Up"}
                 </Link>
               </Grid>
 

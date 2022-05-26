@@ -52,7 +52,6 @@ export const authenticationService = {
   resendOTP,
   unsubscribeAll,
   handleSignup,
-  editprofile,
   handleForget,
   
   currentUser: currentUserSubject.asObservable(),
@@ -69,23 +68,25 @@ export const authenticationService = {
  * Verify OTP method
  */
 function verifyCredentials(payload: any) {
-  return new Promise((resolve, reject) => {
-    handleLogin({ token: "AABBCC", user: defaultUsers[0] });
-    resolve(true);
-  });
-  // return post('/api/auth/login', payload)
-  //     .then((response: any) => {
-  //       //   handleLogin(response)
-  //         handleLogin({ token: "AABBCC", user: defaultUsers[0] });
-  //         return response
-  //     })
-  //     .catch((error: any) => {
-  //       //   showErrorToast(
-  //       //       error.message || 'Error occurred while validating credentials!'
-  //       //   )
-  //         handleLogin({ token: "AABBCC", user: defaultUsers[0] });
-  //         return error
-  //     })
+  console.log(payload);
+  
+  // return new Promise((resolve, reject) => {
+  //   handleLogin({ token: "AABBCC", user: defaultUsers[0] });
+  //   resolve(true);
+  // });
+  return post('/users', payload)
+      .then((response: any) => {
+          handleLogin(response)
+      //     handleLogin({ token: "AABBCC", user: defaultUsers[0] });
+          return response
+      })
+      .catch((error: any) => {
+          showErrorToast(
+              error.message || 'Error occurred while validating credentials!'
+          )
+          // handleLogin({ token: "AABBCC", user: defaultUsers[0] });
+          return error
+      })
 }
 
 /*
@@ -218,6 +219,8 @@ function loadCurrentUser() {
  * Register user method
  */
 function handleLogin(response: any) {
+  // console.log(response);s
+  
   // store user details and jwt token in local storage to keep user logged in between page refreshes
   Cookie.set("_token", response.token, { path: "/" });
 
@@ -243,14 +246,7 @@ function handleSignup() {
 }
 
 
-function editprofile() {
- 
-     console.log("hi"); 
-     console.log(paths.Edit);
-     
-    history.push(paths.Edit);
-    window.location.reload();
-}
+
 
 function handleForget()
 {

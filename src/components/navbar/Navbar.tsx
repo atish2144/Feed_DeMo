@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Logout } from "@mui/icons-material";
 import Tooltip from "@mui/material/Tooltip";
-import { Button } from "@mui/material";
+import { Avatar, Button } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 
 export type NavbarProps = {
@@ -15,10 +15,10 @@ export type NavbarProps = {
    * To be triggered on logout click
    */
   onLogout?: any;
-  editprofile?:any;
+
 };
 
-export const Navbar = ({ onLogout,editprofile }: NavbarProps) => {
+export const Navbar = ({ onLogout }: NavbarProps) => {
   return (
     <AppBar position="static">
       <Toolbar variant="dense">
@@ -36,7 +36,7 @@ export const Navbar = ({ onLogout,editprofile }: NavbarProps) => {
           component="div"
           style={{ flex: 1 }}
         >
-          MUI Template
+          Am Social Feed
         </Typography>
         <Tooltip title="Logout">
           <Button variant="text" style={{ color: '#fff' }} onClick={onLogout}>
@@ -44,13 +44,21 @@ export const Navbar = ({ onLogout,editprofile }: NavbarProps) => {
           </Button>
         </Tooltip>
 
-        <Tooltip title="edit profile">
-          <Button variant="text" style={{ color: '#fff' }} onClick={editprofile}>
+
+        <Avatar >
+          AJ
+        </Avatar>
+
+
+        {/* <Tooltip title="edit profile">
+          <Button variant="text" style={{ color: '#fff' }} >
             <EditIcon />
           </Button>
-        </Tooltip>
+        </Tooltip> */}
 
-    
+        <Typography style={{ fontSize: "12px" }}>Atish Jagtap</Typography>
+
+
       </Toolbar>
     </AppBar>
   );

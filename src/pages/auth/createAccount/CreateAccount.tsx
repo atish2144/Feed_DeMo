@@ -1,9 +1,18 @@
-import { Button, CssBaseline, Stack, TextField, ThemeProvider } from '@mui/material'
+import { Button, CssBaseline, Grid, IconButton, InputAdornment, Stack, TextField, ThemeProvider, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { createTheme } from "@mui/material/styles";
+import LoadingButton from '@mui/lab/LoadingButton';
+import Link from "@mui/material/Link";
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
+interface State {
+
+  password: string;
+  showPassword: boolean;
+
+}
 type Props = {}
 
 const CreateAccount = (props: Props) => {
@@ -14,17 +23,38 @@ const CreateAccount = (props: Props) => {
     email: "",
     password: ""
   })
-  const [errors, seterrors] = useState({ email: "", password: "", firstName: '', lastName: '' });
+  const [errors, seterrors] = useState<any>({ email: "", password: "", firstName: '', lastName: '' });
 
   const [arr, setarr] = useState<any>([]);
+  const [values, setValues] = React.useState<State>({
+    password: '',
+    showPassword: false,
+  });
 
   const handleSubmit = () => {
-    console.log(user);
-    setarr([...arr, user])
+    if (validate()) {
+      return
+    }
+    else {
+      console.log(user);
+      setarr([...arr, user])
+      console.log(arr);
+    }
 
-    console.log(arr);
+
+
   }
 
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
+  };
+
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
 
   // const firstNameHandle=(e:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>)=>{
   //     setuser({...user,firstname:e.target.value})
@@ -32,53 +62,53 @@ const CreateAccount = (props: Props) => {
 
 
 
-  const validateFirstName = () => {
-    let flag = false;
-    if (user.firstname === '') {
-      seterrors((prevState: { errors: any }) => ({
-        errors: { ...prevState.errors, firstName: "FirstName cannot be empty" },
-      }));
-      flag = true;
-    } else {
-      seterrors((prevState: { errors: any }) => ({
-        errors: { ...prevState.errors, firstName: "" },
-      }));
-    }
-    if (flag) {
-      return false;
-    }
-    else {
-      return true;
-    }
-  }
+  // const validateFirstName = () => {
+  //   let flag = false;
+  //   if (user.firstname === '') {
+  //     seterrors((prevState: { errors: any }) => ({
+  //       errors: { ...prevState.errors, firstName: "FirstName cannot be empty" },
+  //     }));
+  //     flag = true;
+  //   } else {
+  //     seterrors((prevState: { errors: any }) => ({
+  //       errors: { ...prevState.errors, firstName: "" },
+  //     }));
+  //   }
+  //   if (flag) {
+  //     return false;
+  //   }
+  //   else {
+  //     return true;
+  //   }
+  // }
 
 
   const validate = () => {
     console.log(user.email);
     let flag = false;
     if (user.firstname === '') {
-      seterrors((prevState) => ({
+      seterrors((prevState: { errors: any; }) => ({
         errors: { ...prevState.errors, firstName: "FirstName cannot be empty" },
       }));
       flag = true;
     } else {
-      seterrors((prevState) => ({
+      seterrors((prevState: { errors: any; }) => ({
         errors: { ...prevState.errors, firstName: "" },
       }));
     }
     if (user.lastname === '') {
-      seterrors((prevState) => ({
+      seterrors((prevState: { errors: any; }) => ({
         errors: { ...prevState.errors, lastName: "LastName cannot be empty" },
       }));
       flag = true;
     } else {
-      seterrors((prevState) => ({
+      seterrors((prevState: { errors: any; }) => ({
         errors: { ...prevState.errors, lastName: "" },
       }));
     }
     if (user.password === "") {
       // seterrors({...errors,password:'Password cannot be empty'})
-      seterrors((prevState) => ({
+      seterrors((prevState: { errors: any; }) => ({
         errors: { ...prevState.errors, password: "Password cannot be empty" },
       }));
       flag = true;
@@ -86,18 +116,18 @@ const CreateAccount = (props: Props) => {
       /^(?=.*\d)(?=.*[a-z]).{6,20}$/.test(user.password) === false
     ) {
       // seterrors({...errors,password:'Invalid Password'})
-      seterrors((prevState) => ({
+      seterrors((prevState: { errors: any; }) => ({
         errors: { ...prevState.errors, password: "Invalid Password" },
       }));
       flag = true;
     } else {
-      seterrors((prevState) => ({
+      seterrors((prevState: { errors: any; }) => ({
         errors: { ...prevState.errors, password: "" },
       }));
     }
     if (user.email === "") {
       // seterrors({...errors,email:'Email cannot be empty'})
-      seterrors((prevState) => ({
+      seterrors((prevState: { errors: any; }) => ({
         ...prevState.errors,
         email: "Email cannot be empty",
       }));
@@ -107,13 +137,13 @@ const CreateAccount = (props: Props) => {
       false
     ) {
       // seterrors({...errors,email:'Invalid Email'})
-      seterrors((prevState) => ({
+      seterrors((prevState: { errors: any; }) => ({
         ...prevState.errors,
         email: "Invalid Email",
       }));
       flag = true;
     } else {
-      seterrors((prevState) => ({ ...prevState.errors, email: "" }));
+      seterrors((prevState: { errors: any; }) => ({ ...prevState.errors, email: "" }));
     }
     if (flag) {
       return false;
@@ -127,12 +157,121 @@ const CreateAccount = (props: Props) => {
 
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Box>
+        <Box sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          boxShadow: 3,
+          paddingLeft: 5,
+          paddingRight: 5
+        }}>
+          <Typography component="h1" variant="h5" sx={{ marginTop: 5 }}>
+            Sign Up to Social Feed
+          </Typography>
+
+          <Stack direction="row" spacing={1}>
+            <Grid item xs={6} sm={6}>
+              <TextField
+                error={errors.firstName ? true : false}
+                margin="normal"
+                required
+                size="small"
+                type='text'
+                id="outlined-error"
+                label="First Name"
+                placeholder='Enter First Name'
+                value={user.firstname}
+                onChange={(e) => setuser({ ...user, firstname: e.target.value })}
+                // onChange={(e)=>firstNameHandle(e)}  
+                helperText={errors.firstName}
+              />
+            </Grid>
+            <Grid item xs={6} sm={6}>
+              <TextField
+                error={errors.lastname ? true : false}
+                margin="normal"
+                required
+                size="small"
+                type='text'
+                id="outlined-error"
+                label="Last Name"
+                placeholder='Enter Last Name'
+                value={user.lastname}
+                onChange={(e) => setuser({ ...user, lastname: e.target.value })}
+                // onChange={(e)=>firstNameHandle(e)}  
+                helperText={errors.lastname}
+              />
+            </Grid>
+          </Stack>
+
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            // defaultValue="navanath@angularminds.com"
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            size="small"
+            sx={{ Width: "200px" }}
+            value={user.email}
+            onChange={(e) => setuser({ ...user, email: e.target.value })}
+          />
+
+
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            // defaultValue="Pass"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            size="small"
+            value={user.password}
+            onChange={(e) => setuser({ ...user, password: e.target.value })}
+            InputProps={{
+              endAdornment:
+                (<InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+                )
+            }}
+          />
+
+          <LoadingButton
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            // loading={isButtonDisabled}
+            onClick={() => handleSubmit()}
+          >
+            Sign In
+          </LoadingButton>
+
+          <Grid item sx={{ mb: "50px" }}>
+            Already have an account?<Link href="/auth/login" variant="body2" >
+              {" Sign In  "}
+            </Link>
+          </Grid>
 
         </Box>
       </Container>
 
-    </ThemeProvider>
+    </ThemeProvider >
   )
 }
 export default CreateAccount
