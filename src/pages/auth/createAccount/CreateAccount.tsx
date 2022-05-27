@@ -217,7 +217,7 @@ const CreateAccount = (props: Props) => {
             autoFocus
             size="small"
             sx={{ Width: "200px" }}
-            value={user.email}
+            // value={user.email}
             onChange={(e) => setuser({ ...user, email: e.target.value })}
           />
 
@@ -228,13 +228,17 @@ const CreateAccount = (props: Props) => {
             fullWidth
             name="password"
             label="Password"
-            // defaultValue="Pass"
-            type="password"
+            defaultValue="Pass"
+            // type="password"
             id="password"
             autoComplete="current-password"
             size="small"
-            value={user.password}
-            onChange={(e) => setuser({ ...user, password: e.target.value })}
+            // value={user.password}
+            value={values.showPassword ? values.password : user.password}
+            type={values.showPassword ? "text" : "password"}
+            // onChange={(e) => setuser({ ...user, password: e.target.value })}
+            onChange={(e) => { setuser({ ...user, password: e.target.value }); setValues({ ...values, password: e.target.value }) }}
+
             InputProps={{
               endAdornment:
                 (<InputAdornment position="end">

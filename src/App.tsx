@@ -1,4 +1,4 @@
-  import "./App.css";
+import "./App.css";
 import { Suspense } from "react";
 import { AppLoader } from "./components/app-loader";
 import { AppNavigator } from "./components/app-navigator";

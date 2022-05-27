@@ -18,6 +18,9 @@ import { InputAdornment } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Divider from '@mui/material/Divider';
+import Chip from '@mui/material/Chip';
+import { styled } from '@mui/material/styles';
 
 interface State {
 
@@ -25,6 +28,14 @@ interface State {
   showPassword: boolean;
 
 }
+
+const Root = styled('div')(({ theme }) => ({
+  width: '100%',
+  ...theme.typography.body2,
+  '& > :not(style) + :not(style)': {
+    marginTop: theme.spacing(2),
+  },
+}));
 
 
 export default function Login() {
@@ -76,7 +87,7 @@ export default function Login() {
   //   };
 
   const handleClickShowPassword = () => {
-    console.log(values);
+    // console.log(values);
 
     // console.log(values.password);
 
@@ -89,7 +100,7 @@ export default function Login() {
 
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    console.log(values);
+    // console.log(values);
 
     setValues({
       ...values,
@@ -133,8 +144,8 @@ export default function Login() {
               margin="normal"
               required
               fullWidth
-              // defaultValue="navanath@angularminds.com"
-              value={data.username}
+              defaultValue="navanath@angularminds.com"
+              // value={data.username}
               id="email"
               label="Email Address"
               name="email"
@@ -150,8 +161,8 @@ export default function Login() {
               fullWidth
               name="password"
               label="Password"
-              // defaultValue="Pass"
-              value={values.showPassword ? values.password : data.password}
+              defaultValue="Pass"
+              // value={values.showPassword ? values.password : data.password}
               type={values.showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
@@ -173,35 +184,48 @@ export default function Login() {
               }}
             />
 
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+            /> */}
             <LoadingButton
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, }}
               loading={isButtonDisabled}
             >
               Sign In
             </LoadingButton>
             <Grid container>
-              {/* <Grid item xs>
-                <Link href="#" variant="body2" onClick={handleSubmit(ForgetPassword)} >
-                  {"Forgot password?"}
-                </Link>
-              </Grid> */}
-              <Grid item sx={{ mb: "50px" }}>
+
+              <Grid item >
+                {/* <Link href="#" variant="body2" onClick={handleSubmit(ForgetPassword)} > */}
+                <Typography sx={{ marginLeft: "180px", mb: 3 }} onClick={handleSubmit(ForgetPassword)}>
+                  {"Forgot  password?"}
+                </Typography>
+
+                {/* </Link> */}
+              </Grid>
+
+              <Grid item sx={{ mb: "30px" }}
+              >
                 Don't have an account?<Link href="/auth/signup" variant="body2" onClick={handleSubmit(signup)}>
                   {" Sign Up"}
                 </Link>
               </Grid>
 
-              <Grid item sx={{ mb: "50px", ml: "60px" }}>
+              {/* <Grid item sx={{ mb: "50px" }}> */}
+              <Root >
+                <Divider>OR</Divider>
+              </Root>
+              {/* </Grid> */}
+
+
+              <Grid item sx={{ mt: "20px", ml: "60px", mb: "50px" }}>
                 <GoogleLogin
                   clientId="85092170565-0jqeuldra1nj5rt4999rhh4snpnn62dl.apps.googleusercontent.com"
-                  buttonText="Login With Google"
+                  buttonText="Sign in With Google"
                   // onSuccess={responseGoogle}
                   // onFailure={responseGoogle}
                   style={{ marginBottom: "30px", marginLeft: "auto", marginRight: "auto" }}
@@ -213,6 +237,6 @@ export default function Login() {
         </Box>
       </Container>
 
-    </ThemeProvider>
+    </ThemeProvider >
   );
 }

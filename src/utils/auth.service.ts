@@ -32,12 +32,11 @@ const currentOrganizationSubject = new BehaviorSubject(
     currentUserFromStorage._org[0]) ||
     undefined
 );
-   
+
 /*
  * Export as a Type
  */
 export const authenticationService = {
-  
   logout,
   authToken,
   register,
@@ -53,7 +52,7 @@ export const authenticationService = {
   unsubscribeAll,
   handleSignup,
   handleForget,
-  
+
   currentUser: currentUserSubject.asObservable(),
   get currentUserValue() {
     return currentUserSubject.value;
@@ -69,24 +68,24 @@ export const authenticationService = {
  */
 function verifyCredentials(payload: any) {
   console.log(payload);
-  
-  // return new Promise((resolve, reject) => {
-  //   handleLogin({ token: "AABBCC", user: defaultUsers[0] });
-  //   resolve(true);
-  // });
-  return post('/users', payload)
-      .then((response: any) => {
-          handleLogin(response)
-      //     handleLogin({ token: "AABBCC", user: defaultUsers[0] });
-          return response
-      })
-      .catch((error: any) => {
-          showErrorToast(
-              error.message || 'Error occurred while validating credentials!'
-          )
-          // handleLogin({ token: "AABBCC", user: defaultUsers[0] });
-          return error
-      })
+
+  return new Promise((resolve, reject) => {
+    handleLogin({ token: "AABBCC", user: defaultUsers[0] });
+    resolve(true);
+  });
+  // return post("/users", payload)
+  //   .then((response: any) => {
+  //     handleLogin(response);
+  //     //     handleLogin({ token: "AABBCC", user: defaultUsers[0] });
+  //     return response;
+  //   })
+  //   .catch((error: any) => {
+  //     showErrorToast(
+  //       error.message || "Error occurred while validating credentials!"
+  //     );
+  //     // handleLogin({ token: "AABBCC", user: defaultUsers[0] });
+  //     return error;
+  //   });
 }
 
 /*
@@ -220,7 +219,7 @@ function loadCurrentUser() {
  */
 function handleLogin(response: any) {
   // console.log(response);s
-  
+
   // store user details and jwt token in local storage to keep user logged in between page refreshes
   Cookie.set("_token", response.token, { path: "/" });
 
@@ -236,22 +235,14 @@ function handleLogin(response: any) {
   }
 }
 
-
-
 function handleSignup() {
   // store user details and jwt token in local storage to keep user logged in between page refreshes
 
-    history.push(paths.CreateAccount);
-    window.location.reload();
-}
-
-
-
-
-function handleForget()
-{
-  history.push(paths.ForgetPassword);
+  history.push(paths.CreateAccount);
   window.location.reload();
 }
 
-
+function handleForget() {
+  history.push(paths.ForgetPassword);
+  window.location.reload();
+}
